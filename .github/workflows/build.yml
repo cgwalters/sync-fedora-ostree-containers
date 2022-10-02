@@ -1,0 +1,32 @@
+name: Build
+on:
+  schedule:
+    - cron: "19 19 * * *"
+  push:
+    branches: ["main"]
+
+env:
+  REGISTRY: ghcr.io
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  encapsulate:
+    strategy:
+      matrix:
+        version: [36, 37]
+    runs-on: ubuntu-latest
+    container:
+      # We're using coreos-assembler just since it is a pre-made
+      # container with rpm-ostree
+      image: quay.io/coreos-assembler/coreos-assembler:latest
+      options: "--user root --privileged -v /srv:/srv"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Login
+        run: podman login --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} ${{ env.REGISTRY }}
+      - name: Encapsulate
+        run: ./encap.sh fedora/${{ matrix.version }}/x86_64/silverblue ${{ env.REPO }}/${{ github.repository_owner }}/fedora-silverblue:${{ matrix.version }}
