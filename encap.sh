@@ -8,9 +8,7 @@ image=$1
 shift
 
 runv () {
-    set -x
-    echo "$@"
-    $@
+    ( set -x ; $@ )
 }
 
 cd $(mktemp -d -p /var/tmp)
