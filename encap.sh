@@ -14,10 +14,12 @@ runv () {
 }
 
 cd $(mktemp -d -p /var/tmp)
-runv skopeo inspect -n docker://${image} > inspect.json || true
+if ! runv skopeo inspect -n docker://${image} > inspect.json; then
+    echo "Failed to invoke skopeo, assuming container does not exist"
+fi
 container_commit=
 if test -s inspect.json; then
-    container_commit=$(jq -r '.Labels["ostree.commit"]')
+    container_commit=$(jq -r '.Labels["ostree.commit"]' inspect.json)
 fi
 
 mkdir repo
