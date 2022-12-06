@@ -26,6 +26,9 @@ cat /etc/ostree/remotes.d/fedora.conf >> repo/config
 runv ostree --repo=repo pull --commit-metadata-only fedora:$ostreeref
 current_commit=$(ostree --repo=repo rev-parse fedora:$ostreeref)
 
+echo "current ostree repo: $current_commit"
+echo "current container image: $container_commit"
+
 if test "$current_commit" == "$container_commit"; then
     echo "Generated container image is up to date at commit $current_commit"
     exit 0
