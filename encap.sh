@@ -34,7 +34,16 @@ if test "$current_commit" == "$container_commit"; then
     exit 0
 fi
 
-runv ostree --repo=repo pull fedora:$ostreeref
+# Fedora infra (or cloudfront?) is giving us 503s, add some retries
+for n in {0..3} max; do
+    if runv ostree --repo=repo pull fedora:$ostreeref; then
+        break
+    else
+        if test $n == max; then
+            exit 1
+        fi
+    fi
+done
 runv rpm-ostree compose container-encapsulate --format-version 1 \
     --repo repo $current_commit oci:tmp
 # Retry since github actions networking flakes sometimes
