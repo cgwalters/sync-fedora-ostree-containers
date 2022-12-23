@@ -34,6 +34,12 @@ if test "$current_commit" == "$container_commit"; then
     exit 0
 fi
 
+# If we have a previous build, re-initialize from the container to avoid
+# lots of small object fetches
+if test -s inspect.json; then
+    ostree container unencapsulate --repo=repo ostree-unverified-registry:${image}
+fi
+
 # Fedora infra (or cloudfront?) is giving us 503s, add some retries
 for n in {0..3} max; do
     if runv ostree --repo=repo pull fedora:$ostreeref; then
