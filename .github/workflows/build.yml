@@ -18,6 +18,7 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
+        variant: [silverblue, kinoite]
         version: [36, 37]
     runs-on: ubuntu-latest
     container:
@@ -31,4 +32,4 @@ jobs:
       - name: Login
         run: podman login --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} ${{ env.REGISTRY }}
       - name: Encapsulate
-        run: ./encap.sh fedora/${{ matrix.version }}/x86_64/silverblue ${{ env.REGISTRY }}/${{ github.repository_owner }}/fedora-silverblue:${{ matrix.version }}
+        run: ./encap.sh fedora/${{ matrix.version }}/x86_64/${{ matrix.variant }} ${{ env.REGISTRY }}/${{ github.repository_owner }}/fedora-${{ matrix.variant }}:${{ matrix.version }}
