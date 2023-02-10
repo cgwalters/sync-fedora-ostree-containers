@@ -10,5 +10,7 @@ Here's a list of published images and their tags:
 
 |                 Image                 |         Tags          |
 |:-------------------------------------:|:---------------------:|
-| `ghcr.io/cgwalters/fedora-silverblue` | `36`, `37`, `rawhide` | 
-|  `ghcr.io/cgwalters/fedora-kinoite`   | `36`, `37`, `rawhide` | 
+| `ghcr.io/cgwalters/fedora-silverblue` | `36`, `37`, `38`, `rawhide` | 
+|  `ghcr.io/cgwalters/fedora-kinoite`   | `36`, `37`, `38`, `rawhide` | 
+
+**38 & rawhide are development branches.**
